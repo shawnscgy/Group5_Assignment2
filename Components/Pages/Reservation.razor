@@ -1,0 +1,65 @@
+﻿@page "/reservation"
+@*Part 1*@
+<h3 class="pagehead">Reservation Finder</h3>
+
+<div class="finder">
+    <div class="from">
+        <label>From</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="to">
+        <label>To</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="day">
+        <label>Day</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="findFlights">
+        <button class="findFlightsButtonR">Find reservation</button>
+    </div>
+</div>
+@*Part 2*@
+<div class="reserve-bar">
+    <h3 class="pagehead reservation-div">Reservations</h3>
+    <input class="reservation-box" placeholder="Loading..." type="text" />
+</div>
+@*Part 3*@
+<h3 class="pagehead reserve-div">Reserve</h3>
+<div class="reservation-fill">
+    <div class="flightItem-reserve-code">
+        <div>Reservation code:</div>
+        <input placeholder="Flight" type="text" />
+    </div>
+    <div class="flightItem-flight-code">
+        <div>Flight code:</div>
+        <input placeholder="Airline" type="text" />
+    </div>
+    <div class="flightItem-airline">
+        <div>Airline:</div>
+        <input placeholder="Day" type="text" />
+    </div>
+    <div class="flightItem-cost">
+        <div>Cost:</div>
+        <input placeholder="Time" type="text" />
+    </div>
+    <div class="flightItem-name">
+        <div>Name:</div>
+        <input placeholder="0" type="text" />
+    </div>
+    <div class="flightItem-citizenship">
+        <div>Citizenship:</div>
+        <input placeholder="Name" type="text" />
+    </div>
+    <div class="flightItem-status">
+        <div>Status:</div>
+        <input placeholder="Active" type="text" />
+    </div>
+</div>
+<div class="savePart">
+    <button class="saveButton">Save</button>
+</div>
+
+@code {
+
+}

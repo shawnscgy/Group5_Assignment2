@@ -1,0 +1,68 @@
+﻿@page "/flights"
+@*Part 1*@
+<h3 class="pagehead">Flight Finder</h3>
+
+<div class="finder">
+    <div class="from">
+        <label>From</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="to">
+        <label>To</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="day">
+        <label>Day</label>
+        <input placeholder="Any" type="text" />
+    </div>
+    <div class="findButton">
+        <button class="findFlightsbutton">Find flights</button>
+    </div>
+</div>
+@*Part 2*@
+<div class="flights flights-div">
+    <h3 class="pagehead">Flights</h3>
+    <input class="flightsName" placeholder="Loading..." type="text" />
+</div>
+
+@*Part 3*@
+<h3 class="pagehead reserve-div">Reserve</h3>
+<div class="reserve-fill">
+    <div class="reserveFlightCode">
+        <div>Flight code:</div>
+        <input placeholder="Flight" type="text" />
+    </div>
+    <div class="reserveAirline">
+        <div>Airline:</div>
+        <input placeholder="Airline" type="text" />
+    </div>
+    <div class="reserveDay">
+        <div>Day:</div>
+        <input placeholder="Day" type="text"  />
+    </div>
+    <div class="reserveTime">
+        <div>Time:</div>
+        <input placeholder="Time" type="text"/>
+    </div>
+    <div class="reserveCost">
+        <div>Cost:</div>
+        <input placeholder="0" type="text" />
+    </div>
+    <div class="reserveName">
+        <div>Name:</div>
+        <input placeholder="Name" type="text" />
+    </div>
+    <div class="reserveCitizenship">
+        <div>Citizenship:</div>
+        <input placeholder="Citizenship" type="text" />
+    </div>
+</div>
+<div class="bottom">
+    <button class="reservebutton">Reserve</button>
+    <p class="codeInfo">Reservation Code: D1256</p>
+</div>
+
+
+@code {
+
+    }

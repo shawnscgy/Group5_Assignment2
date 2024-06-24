@@ -1,0 +1,78 @@
+﻿body {
+}
+
+.pagehead {
+    text-align: center;
+}
+
+.finder {
+    display: flex;
+    align-items:end;
+}
+
+
+.from, .to, .day, .findButton {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+.from, .to, .day {
+    align-content: flex-start;
+    margin-right: 10px;
+}
+.findFlightsbutton {
+    background-color: darkblue;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    color: white;
+    height: 30px;
+    border: none;
+}
+
+.flights {
+    display: flex;
+    flex-direction: column;
+}
+
+.flightsName {
+    flex-grow: 1;
+}
+
+.reserve-fill {
+    display: flex;
+    flex-direction: column;
+}
+
+.reserveFlightCode, .reserveAirline, .reserveDay, .reserveTime, .reserveCost, .reserveName, .reserveCitizenship {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+}
+
+
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0px 30px;
+}
+
+.reservebutton {
+    background-color: darkblue;
+    padding: 3px 10px 3px;
+    color: white;
+    height: 30px;
+    border: none;    
+    width: 30%;
+    margin-bottom: 10px;
+}
+
+.reserve-div {
+    margin-top: 30px;
+}
+
+.flights-div {
+    margin-top: 30px;
+}
