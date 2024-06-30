@@ -1,52 +1,89 @@
 ﻿@page "/flights"
+@using Assignment2.Data
 @*Part 1*@
 <h3 class="pagehead">Flight Finder</h3>
 
 <div class="finder">
     <div class="from">
-        <label>From</label>
-        <input placeholder="Any" type="text" />
+        <div>From</div>
+        <select class="finderBar" @onchange="getDeparture">
+            <option value="" disabled selected hidden>Any</option>
+            @foreach (string airport in airports)
+            {
+                <option value="@airport">@airport</option>
+            }
+        </select>
     </div>
     <div class="to">
-        <label>To</label>
-        <input placeholder="Any" type="text" />
+        <div>To</div>
+        <select class="finderBar" @onchange="getArriving">
+            <option value="" disabled selected hidden>Any</option>
+            @foreach (string airport in airports)
+            {
+                <option value="@airport">@airport</option>
+            }
+        </select>
     </div>
     <div class="day">
-        <label>Day</label>
-        <input placeholder="Any" type="text" />
+        <div>Day</div>
+        <select class="finderBar" @onchange="getDay">
+            <option value="" disabled selected hidden>Any</option>
+            <option value="Monday">Monday</option>
+            <option value="Tueaday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
     </div>
     <div class="findButton">
-        <button class="findFlightsbutton">Find flights</button>
+        <button class="findFlightsbutton" @onclick="findFlights">Find flights</button>
     </div>
 </div>
+
 @*Part 2*@
 <div class="flights flights-div">
     <h3 class="pagehead">Flights</h3>
-    <input class="flightsName" placeholder="Loading..." type="text" />
-</div> 
+    <select class="flightsName" @onchange="getInfo">
+        <option value="" disabled selected hidden>Loading...</option>
+        @if (conditionedFlights.Count == 0 && clickFindFlights > 0)
+        {
+            <option value="" disabled selected hidden>Flight does not exist.</option>
+        }
+        else if (conditionedFlights.Count > 0)
+        {
+            <option value="@conditionedFlights[0]" selected hidden>@conditionedFlights[0].ToString()</option>
+            @foreach (Flight flight in conditionedFlights)
+            {
+                <option value="@flight">@flight.ToString()</option>
+            }
+        }
+    </select>
+</div>
 
 @*Part 3*@
 <h3 class="pagehead reserve-div">Reserve</h3>
 <div class="reserve-fill">
     <div class="reserveFlightCode">
         <div>Flight code:</div>
-        <input placeholder="Flight" type="text" />
+        <input placeholder="Flight" type="text" @bind="chosenFlightCode" />
     </div>
     <div class="reserveAirline">
         <div>Airline:</div>
-        <input placeholder="Airline" type="text" />
+        <input placeholder="Airline" type="text" @bind="chosenAirline" />
     </div>
     <div class="reserveDay">
         <div>Day:</div>
-        <input placeholder="Day" type="text"  />
+        <input placeholder="Day" type="text" @bind="chosenDay" />
     </div>
     <div class="reserveTime">
         <div>Time:</div>
-        <input placeholder="Time" type="text"/>
+        <input placeholder="Time" type="text" @bind="chosenTime" />
     </div>
     <div class="reserveCost">
         <div>Cost:</div>
-        <input placeholder="0" type="text" />
+        <input placeholder="0" type="text" @bind="chosenCost" />
     </div>
     <div class="reserveName">
         <div>Name:</div>
@@ -64,6 +101,89 @@
 
 
 @code {
+    FlightManager fm = new FlightManager();
+    List<Flight> flights = FlightManager.GetFlights();
+    FlightService fs = new FlightService();
+    List<string> airports = FlightService.GetAirports();
+    List<Flight> conditionedFlights = new List<Flight>();
+    int clickFindFlights = 0; // Count how many times the findFlights button clicked
+    string departure; // departure airport of flight finder
+    string arriving; // arriving airport of flight finder
+    string day; // the day of flight finder
+
+    Flight chosenOne; // the flight chose in part2
+    
+    // after choosing the flight
+    string chosenFlightCode;
+    string chosenAirline;
+    string chosenDay;
+    string chosenTime;
+    string chosenCost;
+    string chosenName;
+    string chosenCitizenship;
+
+    private void getDeparture(ChangeEventArgs e)
+    {
+        departure = e.Value.ToString().Substring(0, 3);
+    }
+    private void getArriving(ChangeEventArgs e)
+    {
+        arriving = e.Value.ToString().Substring(0, 3);
+    }
+    private void getDay(ChangeEventArgs e)
+    {
+        day = e.Value.ToString();
+    }
+
+    private void findFlights()
+    {
+        clickFindFlights += 1;
+        conditionedFlights.Clear();
+        foreach (Flight flight in flights)
+        {
+            if ((string.IsNullOrEmpty(departure) || flight.Departure == departure) && (string.IsNullOrEmpty(arriving) || flight.Arriving == arriving)
+            && (string.IsNullOrEmpty(day) || flight.Day == day))
+            {
+                conditionedFlights.Add(flight);
+            }
+        }
+        if (conditionedFlights.Count > 0)
+        {
+            chosenOne = conditionedFlights[0];
+            updateInfoOfChosenOne();
+        }
+        else
+        {
+            chosenOne = null;
+            updateInfoOfChosenOne();
+        }
 
 
     }
+    private void getInfo(ChangeEventArgs e)
+    {
+        chosenOne = flights.Find(a => a.ToString() == e.Value.ToString());
+        updateInfoOfChosenOne();
+    }
+    private void updateInfoOfChosenOne()
+    {
+        if (chosenOne != null)
+        {
+            chosenFlightCode = chosenOne.FlightCode;
+            chosenAirline = chosenOne.Airline;
+            chosenDay = chosenOne.Day;
+            chosenTime = chosenOne.Time;
+            chosenCost = chosenOne.Cost.ToString();
+        }
+        else
+        {
+            chosenFlightCode = "";
+            chosenAirline = "";
+            chosenDay = "";
+            chosenTime = "";
+            chosenCost = "";
+        }
+
+    }
+
+}
