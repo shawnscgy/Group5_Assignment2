@@ -1,14 +1,15 @@
 ﻿@page "/reservation"
+@using Assignment2.Data
 @*Part 1*@
 <h3 class="pagehead">Reservation Finder</h3>
 
 <div class="finder">
     <div class="from">
-        <label>From</label>
+        <div>Code</div>
         <input placeholder="Any" type="text" />
     </div>
     <div class="to">
-        <label>To</label>
+        <label></label>
         <input placeholder="Any" type="text" />
     </div>
     <div class="day">
@@ -61,5 +62,6 @@
 </div>
 
 @code {
-
+    FlightService fs = new FlightService();
+    List<string> airports = FlightService.GetAirports();
 }

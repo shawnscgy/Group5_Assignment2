@@ -7,7 +7,8 @@
 
 .finder {
     display: flex;
-    align-items:end;
+    align-items: end;
+    flex-wrap: wrap;
 }
 
 
@@ -15,19 +16,30 @@
     display: flex;
     flex-direction: column;
     width: 25%;
+    flex: 1;
 }
+
 .from, .to, .day {
-    align-content: flex-start;
     margin-right: 10px;
 }
+
+.finderBar {
+    height: 30px;
+}
+
 .findFlightsbutton {
     background-color: darkblue;
     padding-bottom: 3px;
     padding-top: 3px;
     color: white;
-    height: 30px;
-    border: none;
+    height: 32px;
+    border: solid;
 }
+
+    .findFlightsbutton:active {
+        transform: scale(0.95);
+    }
+
 
 .flights {
     display: flex;
@@ -35,6 +47,7 @@
 }
 
 .flightsName {
+    height: 30px;
     flex-grow: 1;
 }
 
@@ -63,8 +76,8 @@
     background-color: darkblue;
     padding: 3px 10px 3px;
     color: white;
-    height: 30px;
-    border: none;    
+    height: 32px;
+    border: none;
     width: 30%;
     margin-bottom: 10px;
 }
