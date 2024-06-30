@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assignment2.Data
 {
-    internal class InvalidCitizenshipException
+    public class InvalidCitizenshipException : Exception
     {
+        public InvalidCitizenshipException() : base ("Citizenship can not be empty. Please input citizenship"){ }
     }
 }

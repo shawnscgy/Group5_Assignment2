@@ -38,7 +38,7 @@
         </select>
     </div>
     <div class="findButton">
-        <button class="findFlightsbutton" @onclick="findFlights">Find flights</button>
+        <button class="findFlightsbutton" @onclick="findFlights">Find Flights</button>
     </div>
 </div>
 
@@ -87,54 +87,64 @@
     </div>
     <div class="reserveName">
         <div>Name:</div>
-        <input placeholder="Name" type="text" />
+        <input placeholder="Name" type="text" @bind="writtenName" />
     </div>
     <div class="reserveCitizenship">
         <div>Citizenship:</div>
-        <input placeholder="Citizenship" type="text" />
+        <input placeholder="Citizenship" type="text" @bind="citizenship" />
     </div>
 </div>
 <div class="bottom">
-    <button class="reservebutton">Reserve</button>
+    <button class="reservebutton" @onclick="makeReservation">Reserve</button>
     <p class="codeInfo">Reservation Code: D1256</p>
 </div>
 
 
 @code {
+    // make a list of all the flights
     FlightManager fm = new FlightManager();
     List<Flight> flights = FlightManager.GetFlights();
+    // make a list of all the airports
     FlightService fs = new FlightService();
     List<string> airports = FlightService.GetAirports();
+    // make a list of flights you set constraints for
     List<Flight> conditionedFlights = new List<Flight>();
+
     int clickFindFlights = 0; // Count how many times the findFlights button clicked
     string departure; // departure airport of flight finder
     string arriving; // arriving airport of flight finder
     string day; // the day of flight finder
 
     Flight chosenOne; // the flight chose in part2
-    
-    // after choosing the flight
+
+    // info of the chosen flight
     string chosenFlightCode;
     string chosenAirline;
     string chosenDay;
     string chosenTime;
     string chosenCost;
-    string chosenName;
-    string chosenCitizenship;
 
+    // after reserve
+    string writtenName;
+    string citizenship;
+    List<Reservation> reservations = new List<Reservation>();
+
+    // get depart airline
     private void getDeparture(ChangeEventArgs e)
     {
         departure = e.Value.ToString().Substring(0, 3);
     }
+    // get arriving airline
     private void getArriving(ChangeEventArgs e)
     {
         arriving = e.Value.ToString().Substring(0, 3);
     }
+    // get day
     private void getDay(ChangeEventArgs e)
     {
         day = e.Value.ToString();
     }
-
+    // get conditioned flighs list
     private void findFlights()
     {
         clickFindFlights += 1;
@@ -147,24 +157,26 @@
                 conditionedFlights.Add(flight);
             }
         }
+        // make the first flight of the list automatically chosen in part2 bar
         if (conditionedFlights.Count > 0)
         {
             chosenOne = conditionedFlights[0];
             updateInfoOfChosenOne();
         }
+        // This is for empty conditioned list
         else
         {
-            chosenOne = null;
+            chosenOne = new Flight(); // make an empty chosen one
             updateInfoOfChosenOne();
         }
-
-
     }
+    // get chosenOne using info of part2
     private void getInfo(ChangeEventArgs e)
     {
         chosenOne = flights.Find(a => a.ToString() == e.Value.ToString());
         updateInfoOfChosenOne();
     }
+    // populate the bars of part3 with info of the chosen flight
     private void updateInfoOfChosenOne()
     {
         if (chosenOne != null)
@@ -185,5 +197,24 @@
         }
 
     }
-
+    private void makeReservation()
+    {
+        try
+        {
+            Console.WriteLine($"Creating reservation with: {chosenOne}, {writtenName}, {citizenship}");
+            Reservation r = new Reservation(chosenOne, writtenName, citizenship);
+        }
+        catch (InvalidFlightCodeException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        catch (InvalidNameException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        catch (InvalidCitizenshipException e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
 }

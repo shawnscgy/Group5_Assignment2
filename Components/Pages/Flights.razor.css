@@ -81,6 +81,9 @@
     width: 30%;
     margin-bottom: 10px;
 }
+    .reservebutton:active {
+        transform: scale(0.95);
+    }
 
 .reserve-div {
     margin-top: 30px;

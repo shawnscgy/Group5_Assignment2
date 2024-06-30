@@ -7,26 +7,29 @@
 
 .finder {
     display: flex;
-    align-items:end;
+    align-items: end;
+    flex-wrap: wrap;
 }
 
 
-.from, .to, .day, .findFlights {
+
+.code, .airline, .name, .findReservation {
     display: flex;
     flex-direction: column;
     width: 25%;
+    flex:1;
 }
-.from, .to, .day {   
+.code, .airline, .name {   
     align-content: flex-start;
     margin-right: 10px;
 }
 
-.findFlightsButtonR {
+.findReservationButtonR {
     background-color: darkblue;
     padding-bottom: 3px;
     padding-top: 3px;
     color: white;
-    height: 30px;
+    height: 32px;
     border:solid;
 }
 .reserve-bar {

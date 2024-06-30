@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assignment2.Data
 {
-    internal class InvalidNameException
+    public class InvalidNameException : Exception
     {
+        public InvalidNameException() : base("Name can not be empty. Please input client's full name") { }
+
     }
 }

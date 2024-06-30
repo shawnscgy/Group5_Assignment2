@@ -1,23 +1,31 @@
 ﻿@page "/reservation"
 @using Assignment2.Data
+
 @*Part 1*@
 <h3 class="pagehead">Reservation Finder</h3>
 
 <div class="finder">
-    <div class="from">
+    <div class="code">
         <div>Code</div>
         <input placeholder="Any" type="text" />
     </div>
-    <div class="to">
-        <label></label>
+    <div class="airline">
+        <div>Airline</div>
+        <input placeholder ="Any" type="text" />
+        @* <input list="clientsList" placeholder="Any" type="text" />
+        <datalist id="clientsList">
+            @foreach (string airport in airports)
+            {
+                <option value="@airport">@airport</option>
+            }           
+        </datalist> *@
+    </div>
+    <div class="name">
+        <div>Name</div>
         <input placeholder="Any" type="text" />
     </div>
-    <div class="day">
-        <label>Day</label>
-        <input placeholder="Any" type="text" />
-    </div>
-    <div class="findFlights">
-        <button class="findFlightsButtonR">Find reservation</button>
+    <div class="findReservation">
+        <button class="findReservationButtonR">Find Reservation</button>
     </div>
 </div>
 @*Part 2*@
