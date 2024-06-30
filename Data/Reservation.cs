@@ -58,9 +58,7 @@ namespace Assignment2.Data
             }
         }
 
-
-
-        public Reservation(Flight flight, string name, string citizenship)
+        public Reservation(Flight? flight, string? name, string? citizenship)
         {
             this.Flight = flight;
             this.Name = name;

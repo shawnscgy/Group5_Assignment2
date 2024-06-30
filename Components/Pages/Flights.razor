@@ -60,6 +60,7 @@
             }
         }
     </select>
+    <span>@cautionInfo</span>
 </div>
 
 @*Part 3*@
@@ -95,6 +96,7 @@
     </div>
 </div>
 <div class="bottom">
+    @* <p @bind-="@cautionInfo">@cautionInfo</p> *@
     <button class="reservebutton" @onclick="makeReservation">Reserve</button>
     <p class="codeInfo">Reservation Code: D1256</p>
 </div>
@@ -124,10 +126,13 @@
     string chosenTime;
     string chosenCost;
 
-    // after reserve
+    // reserve info
     string writtenName;
     string citizenship;
     List<Reservation> reservations = new List<Reservation>();
+
+    // Caution info
+    string cautionInfo;
 
     // get depart airline
     private void getDeparture(ChangeEventArgs e)
@@ -179,7 +184,7 @@
     // populate the bars of part3 with info of the chosen flight
     private void updateInfoOfChosenOne()
     {
-        if (chosenOne != null)
+        if (chosenOne is not null)
         {
             chosenFlightCode = chosenOne.FlightCode;
             chosenAirline = chosenOne.Airline;
@@ -201,20 +206,19 @@
     {
         try
         {
-            Console.WriteLine($"Creating reservation with: {chosenOne}, {writtenName}, {citizenship}");
             Reservation r = new Reservation(chosenOne, writtenName, citizenship);
         }
         catch (InvalidFlightCodeException e)
         {
-            Console.WriteLine(e.Message);
+            cautionInfo = e.Message;
         }
         catch (InvalidNameException e)
         {
-            Console.WriteLine(e.Message);
+            writtenName = e.Message;
         }
         catch (InvalidCitizenshipException e)
         {
-            Console.WriteLine(e.Message);
+            citizenship = e.Message;
         }
     }
 }
