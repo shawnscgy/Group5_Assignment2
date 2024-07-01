@@ -1,5 +1,6 @@
 ﻿@page "/flights"
 @using Assignment2.Data
+@using System.IO
 @*Part 1*@
 <h3 class="pagehead">Flight Finder</h3>
 
@@ -67,23 +68,23 @@
 <div class="reserve-fill">
     <div class="reserveFlightCode">
         <div>Flight code:</div>
-        <input placeholder="Flight" type="text" @bind="chosenFlightCode" />
+        <input placeholder="Flight" type="text" @bind="chosenFlightCode" disabled />
     </div>
     <div class="reserveAirline">
         <div>Airline:</div>
-        <input placeholder="Airline" type="text" @bind="chosenAirline" />
+        <input placeholder="Airline" type="text" @bind="chosenAirline" disabled />
     </div>
     <div class="reserveDay">
         <div>Day:</div>
-        <input placeholder="Day" type="text" @bind="chosenDay" />
+        <input placeholder="Day" type="text" @bind="chosenDay" disabled />
     </div>
     <div class="reserveTime">
         <div>Time:</div>
-        <input placeholder="Time" type="text" @bind="chosenTime" />
+        <input placeholder="Time" type="text" @bind="chosenTime" disabled />
     </div>
     <div class="reserveCost">
         <div>Cost:</div>
-        <input placeholder="0" type="text" @bind="chosenCost" />
+        <input placeholder="0" type="text" @bind="chosenCost" disabled />
     </div>
     <div class="reserveName">
         <div>Name:</div>
@@ -101,13 +102,14 @@
 
 
 @code {
+
     // make a list of all the flights
     FlightManager fm = new FlightManager();
     List<Flight> flights = FlightManager.GetFlights();
     // make a list of all the airports
     FlightService fs = new FlightService();
     List<string> airports = FlightService.GetAirports();
-    // make a list of flights you set constraints for
+    // make a list of flights with constraints
     List<Flight> conditionedFlights = new List<Flight>();
 
     int clickFindFlights = 0; // Count how many times the findFlights button clicked
@@ -127,7 +129,9 @@
     // after reserve
     string writtenName;
     string citizenship;
+    string reservationCode;
     List<Reservation> reservations = new List<Reservation>();
+
 
     // get depart airline
     private void getDeparture(ChangeEventArgs e)
@@ -201,8 +205,8 @@
     {
         try
         {
-            Console.WriteLine($"Creating reservation with: {chosenOne}, {writtenName}, {citizenship}");
-            Reservation r = new Reservation(chosenOne, writtenName, citizenship);
+            Reservation reservation = new Reservation(chosenOne, writtenName, citizenship);
+            //Reservation r = new Reservation();
         }
         catch (InvalidFlightCodeException e)
         {
@@ -216,5 +220,16 @@
         {
             Console.WriteLine(e.Message);
         }
+        ReservationManager rm = new ReservationManager();
+        reservationCode = ReservationManager.RenderCode();
+        saveToReservationFile();
+    }
+    private void saveToReservationFile()
+    {
+        string filePathReservation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..//..//..//..//..//Resources//Res//reservations.csv");
+        List<string> infoList = new List<string>();
+        string info = $"{reservationCode},{chosenOne.Airline},{writtenName},{citizenship},active";
+        infoList.Add(info);
+        File.AppendAllLines(filePathReservation, infoList);
     }
 }

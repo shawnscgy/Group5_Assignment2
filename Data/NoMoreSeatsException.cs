@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment2.Data
 {
-    internal class NoMoreSeatsException
+    public class NoMoreSeatsException
     {
     }
 }

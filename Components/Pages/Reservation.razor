@@ -7,22 +7,22 @@
 <div class="finder">
     <div class="code">
         <div>Code</div>
-        <input placeholder="Any" type="text" />
+        <input placeholder="Any" type="text" @bind="reservationCode" />
     </div>
     <div class="airline">
         <div>Airline</div>
-        <input placeholder ="Any" type="text" />
+        <input placeholder="Any" type="text" @bind="airline" />
         @* <input list="clientsList" placeholder="Any" type="text" />
         <datalist id="clientsList">
-            @foreach (string airport in airports)
-            {
-                <option value="@airport">@airport</option>
-            }           
+        @foreach (string airport in airports)
+        {
+        <option value="@airport">@airport</option>
+        }
         </datalist> *@
     </div>
     <div class="name">
         <div>Name</div>
-        <input placeholder="Any" type="text" />
+        <input placeholder="Any" type="text" @bind="name" />
     </div>
     <div class="findReservation">
         <button class="findReservationButtonR">Find Reservation</button>
@@ -31,6 +31,21 @@
 @*Part 2*@
 <div class="reserve-bar">
     <h3 class="pagehead reservation-div">Reservations</h3>
+    <select class="reservation-box" @onchange="getInfo">
+        <option value="" disabled selected hidden>Loading...</option>
+        @if (conditionedReservations.Count > 0 && clickFindReservations > 0)
+        {
+            <option value="" disabled selected hidden>Reservation does not exist.</option>
+        }
+        else
+        {
+            <option value="@conditionedReservations[0]" selected hidden>@conditionedReservations[0].ToString</option>
+            foreach (Reservation reservation in conditionedReservations)
+            {
+                <option value="@reservation">@reservation.ToString</option>
+            }
+        }
+    </select>
     <input class="reservation-box" placeholder="Loading..." type="text" />
 </div>
 @*Part 3*@
@@ -38,27 +53,27 @@
 <div class="reservation-fill">
     <div class="flightItem-reserve-code">
         <div>Reservation code:</div>
-        <input placeholder="Flight" type="text" />
+        <input placeholder="Reservation" type="text" disabled/>
     </div>
     <div class="flightItem-flight-code">
         <div>Flight code:</div>
-        <input placeholder="Airline" type="text" />
+        <input placeholder="Flight" type="text" disabled/>
     </div>
     <div class="flightItem-airline">
         <div>Airline:</div>
-        <input placeholder="Day" type="text" />
+        <input placeholder="Airline" type="text" disabled/>
     </div>
     <div class="flightItem-cost">
         <div>Cost:</div>
-        <input placeholder="Time" type="text" />
+        <input placeholder="0" type="text" disabled/>
     </div>
     <div class="flightItem-name">
         <div>Name:</div>
-        <input placeholder="0" type="text" />
+        <input placeholder="Name" type="text" />
     </div>
     <div class="flightItem-citizenship">
         <div>Citizenship:</div>
-        <input placeholder="Name" type="text" />
+        <input placeholder="Citizenship" type="text" />
     </div>
     <div class="flightItem-status">
         <div>Status:</div>
@@ -66,10 +81,87 @@
     </div>
 </div>
 <div class="savePart">
-    <button class="saveButton">Save</button>
+    <button class="saveButton" @onclick="save">Save</button>
 </div>
 
 @code {
+    string reservationCode;
+    string airline;
+    string name;
+    // make a list of all the airports
     FlightService fs = new FlightService();
     List<string> airports = FlightService.GetAirports();
+    // reservations list
+    ReservationManager rm = new ReservationManager();
+    List<Reservation> reservations = ReservationManager.GetReservations();
+    List<Reservation> conditionedReservations = new List<Reservation>();
+
+    int clickFindReservations = 0; // Count how many times the findReservations button clicked
+    Reservation chosenOne;
+    // info for part3
+    string flightCode;
+    int cost;
+    string citizenship;
+    string status;
+
+    public void findReservation()
+    {
+        clickFindReservations++;
+        conditionedReservations.Clear();
+        foreach (Reservation reservation in reservations)
+        {
+            if ((string.IsNullOrEmpty(reservationCode) || reservationCode == reservation.reservationCode) &&
+            (string.IsNullOrEmpty(airline) || airline == reservation.airline) &&
+            (string.IsNullOrEmpty(name) || name == reservation.name))
+            {
+                conditionedReservations.Add(reservation);
+            }
+        }
+        if (conditionedReservations.Count > 0)
+        {
+            chosenOne = conditionedReservations[0];
+            updateInfoOfChosenOne();
+        }
+        else
+        {
+            chosenOne = new Reservation(); 
+            updateInfoOfChosenOne();
+        }
+
+    }
+    private void getInfo(ChangeEventArgs e)
+    {
+        chosenOne = reservations.Find(a => a.ToString() == e.Value.ToString());
+        updateInfoOfChosenOne();
+    }
+    // populate the bars of part3 with info of the chosen flight
+    private void updateInfoOfChosenOne()
+    {
+        if (chosenOne != null)
+        {
+            reservationCode = chosenOne.reservationCode;
+            flightCode = chosenOne.flight.flightCode;
+            airline = chosenOne.airline;
+            cost = chosenOne.flight.cost;
+            name = chosenOne.name;
+            citizenship = chosenOne.citizenship;
+            status = chosenOne.status;
+        }
+        else
+        {
+            reservationCode = "";
+            flightCode = "";
+            airline = "";
+            cost = 0;
+            name = "";
+            citizenship = "";
+            status = "";
+        }
+    }
+    public void save()
+    {
+        chosenOne.mutator(name, citizenship, status);
+    }
+
 }
+
