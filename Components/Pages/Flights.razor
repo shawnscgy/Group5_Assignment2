@@ -221,6 +221,10 @@
         {
             citizenship = e.Message;
         }
+        finally
+        {
+            cautionInfo = "Reservation object is created";
+        }
         ReservationManager rm = new ReservationManager();
         reservationCode = ReservationManager.RenderCode();
         saveToReservationFile();
